@@ -1,50 +1,54 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import './button.css';
 
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+export function Button({ label, disabled, group, size }) {
+  const groupClassMap = {
+    "primary": "react-easy-button--primary",
+    "secondary": "react-easy-button--secondary",
+    "text": "react-easy-button--text",
+  }
+
+  const sizeClassMap = {
+    small: "react-easy-button--small",
+    medium: "react-easy-button--medium",
+    large: "react-easy-button--large",
+  }
+
+  const className = 'react-easy-button ' + groupClassMap[group] + ' ' + sizeClassMap[size];
   return (
-    <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
-  );
-};
+    <button disabled={disabled} className={className}>{ label }</button>
+  )
+}
 
 Button.propTypes = {
   /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * Button contents
+   * Label to render for button
    */
   label: PropTypes.string.isRequired,
+
   /**
-   * Optional click handler
+   * Whether to disable the button
    */
-  onClick: PropTypes.func,
-};
+  disabled: PropTypes.bool,
+
+  /**
+   * Button group
+   */
+  group: PropTypes.oneOf(["primary", "secondary", "text"]).isRequired,
+
+   /**
+   * Size of button
+   */
+   size: PropTypes.oneOf(["small", "medium", "large"])
+}
 
 Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: 'medium',
-  onClick: undefined,
-};
+  label: "click me !",
+  disabled: false,
+  group: "primary",
+  size: "medium"
+}
